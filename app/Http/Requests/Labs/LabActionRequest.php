@@ -18,7 +18,7 @@ final class LabActionRequest extends FormRequest
             'delay_microseconds' => ['nullable', 'integer', 'min:0', 'max:2000000'],
             'quantity' => ['nullable', 'integer', 'min:1', 'max:10'],
             'run_mode' => ['nullable', 'string', 'in:single,batch_race'],
-            'count' => ['nullable', 'integer', 'min:1', 'max:500'],
+            'count' => ['nullable', 'integer', 'min:1', 'max:100'],
         ];
     }
 }
