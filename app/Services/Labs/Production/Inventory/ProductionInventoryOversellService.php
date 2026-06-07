@@ -9,6 +9,7 @@ use App\Models\Labs\Production\ProductionInventoryOrder;
 use App\Models\Labs\Production\ProductionInventoryProduct;
 use App\Services\Labs\Core\LabDatabaseResetService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Throwable;
 
@@ -114,8 +115,16 @@ final class ProductionInventoryOversellService
                 ],
             );
         } catch (Throwable $e) {
+            Log::error('Production inventory order failed.', [
+                'exception' => $e,
+                'service' => self::class,
+                'payload' => [
+                    'run_mode' => $payload['run_mode'] ?? null,
+                ],
+            ]);
+
             return LabActionResult::failed(
-                message: 'Production: '.$e->getMessage(),
+                message: 'Production: Something went wrong while creating the order',
                 statusCode: 500,
             );
         }

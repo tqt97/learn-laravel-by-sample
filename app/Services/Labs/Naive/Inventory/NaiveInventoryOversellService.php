@@ -7,6 +7,7 @@ use App\DTOs\Labs\LabStateResult;
 use App\Models\Labs\Naive\NaiveInventoryOrder;
 use App\Models\Labs\Naive\NaiveInventoryProduct;
 use App\Services\Labs\Core\LabDatabaseResetService;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 final class NaiveInventoryOversellService
@@ -43,8 +44,16 @@ final class NaiveInventoryOversellService
                 ],
             );
         } catch (Throwable $e) {
+            Log::error('Naive inventory order failed.', [
+                'exception' => $e,
+                'service' => self::class,
+                'payload' => [
+                    'run_mode' => $payload['run_mode'] ?? null,
+                ],
+            ]);
+
             return LabActionResult::failed(
-                message: 'Naive: '.$e->getMessage(),
+                message: 'Naive: Something went wrong while creating the order.',
                 statusCode: 500,
             );
         }
@@ -105,8 +114,16 @@ final class NaiveInventoryOversellService
                 ],
             );
         } catch (Throwable $e) {
+            Log::error('Naive inventory order failed.', [
+                'exception' => $e,
+                'service' => self::class,
+                'payload' => [
+                    'run_mode' => $payload['run_mode'] ?? null,
+                ],
+            ]);
+
             return LabActionResult::failed(
-                message: 'Naive Batch Race: '.$e->getMessage(),
+                message: 'Naive Batch Race: Something went wrong while creating the order.',
                 statusCode: 500,
             );
         }

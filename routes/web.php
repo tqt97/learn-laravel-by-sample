@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Labs\LabMode;
 use App\Http\Controllers\Labs\LabActionController;
 use App\Http\Controllers\Labs\LabDashboardController;
 use App\Http\Controllers\Labs\LabResetController;
@@ -31,10 +32,12 @@ Route::prefix('labs')->name('labs.')->group(function () {
     Route::get('/state/{scenario}', LabStateController::class)->name('state');
 
     Route::post('/action/{scenario}/{mode}', LabActionController::class)
-        ->name('action');
+        ->name('action')
+        ->whereIn('mode', LabMode::values());
 
     Route::post('/reset/{scenario}/{mode}', LabResetController::class)
-        ->name('reset');
+        ->name('reset')
+        ->whereIn('mode', LabMode::values());
 
     Route::post('/reset/{scenario}', [LabResetController::class, 'resetAll'])
         ->name('reset-all');
