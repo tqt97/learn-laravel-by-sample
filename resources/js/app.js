@@ -1,7 +1,13 @@
 import './back-to-top';
-import './labs/lab-api';
-import './labs/lab-dashboard';
-import './labs/lab-ui';
+
+// Labs UI
+import './labs/api';
+import './labs/utils';
+import './labs/chart';
+import './labs/scenario-meta';
+import './labs/learning-center';
+import './labs/dashboard';
+import './labs/ui';
 
 import Alpine from 'alpinejs';
 

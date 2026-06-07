@@ -10,10 +10,10 @@
 
             <div class="hidden sm:block">
                 <div class="text-sm font-bold text-slate-950 dark:text-white">
-                    Laravel Production Lab
+                    {{ __('lab.header_title') }}
                 </div>
                 <div class="text-xs text-slate-500 dark:text-slate-400">
-                    System Design Comparison
+                    {{ __('lab.header_subtitle') }}
                 </div>
             </div>
         </a>
@@ -34,7 +34,7 @@
             @auth
                 <a href="{{ route('dashboard') }}"
                     class="hidden rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800 sm:inline-flex">
-                    Dashboard
+                    {{ __('lab.dashboard') }}
                 </a>
 
                 <form method="POST" action="{{ route('logout') }}">
@@ -42,19 +42,19 @@
 
                     <button type="submit"
                         class="rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-700 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200">
-                        Logout
+                        {{ __('lab.logout') }}
                     </button>
                 </form>
             @else
                 <a href="{{ route('login') }}"
                     class="rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">
-                    Login
+                    {{ __('lab.login') }}
                 </a>
 
                 @if (Route::has('register'))
                     <a href="{{ route('register') }}"
                         class="hidden rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-700 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200 sm:inline-flex">
-                        Register
+                        {{ __('lab.register') }}
                     </a>
                 @endif
             @endauth

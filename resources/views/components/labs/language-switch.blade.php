@@ -9,14 +9,14 @@
                 'bg-indigo-600 text-white shadow-sm' => $locale['active'],
                 'text-slate-600 hover:bg-white dark:text-slate-300 dark:hover:bg-slate-800' => ! $locale['active'],
             ])
-            title="{{ $locale['default'] ? 'Default language' : 'Switch language' }}"
+            title="{{ $locale['default'] ? __('lab.default_language') : __('lab.switch_language') }}"
         >
             <span>{{ $locale['flag'] }}</span>
             <span>{{ $locale['label'] }}</span>
 
             @if ($locale['default'])
                 <span class="ml-1 text-[10px] opacity-70">
-                    default
+                    {{ __('lab.default') }}
                 </span>
             @endif
         </a>

@@ -1,2 +1,2 @@
-<x-lab-layout :scenarios="$scenarios" :defaultScenario="$defaultScenario" />
+<x-lab-layout :scenarios="$scenarios" :defaultScenario="$defaultScenario" :defaultScenarioMeta="$defaultScenarioMeta"/>
 
