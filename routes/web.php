@@ -1,12 +1,9 @@
 <?php
 
+use App\Http\Controllers\Labs\LabDashboardController;
 use App\Http\Controllers\LocaleSwitchController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -24,3 +21,6 @@ require __DIR__.'/auth.php';
 Route::get('/locale/{locale}', LocaleSwitchController::class)
     ->where('locale', '[a-zA-Z]{2}')
     ->name('locale.switch');
+
+// Labs routes
+Route::get('/', LabDashboardController::class)->name('dashboard');
