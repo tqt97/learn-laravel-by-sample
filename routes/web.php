@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Labs\LabActionController;
 use App\Http\Controllers\Labs\LabDashboardController;
+use App\Http\Controllers\Labs\LabResetController;
+use App\Http\Controllers\Labs\LabStateController;
 use App\Http\Controllers\LocaleSwitchController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -24,3 +27,15 @@ Route::get('/locale/{locale}', LocaleSwitchController::class)
 
 // Labs routes
 Route::get('/', LabDashboardController::class)->name('dashboard');
+Route::prefix('labs')->name('labs.')->group(function () {
+    Route::get('/state/{scenario}', LabStateController::class)->name('state');
+
+    Route::post('/action/{scenario}/{mode}', LabActionController::class)
+        ->name('action');
+
+    Route::post('/reset/{scenario}/{mode}', LabResetController::class)
+        ->name('reset');
+
+    Route::post('/reset/{scenario}', [LabResetController::class, 'resetAll'])
+        ->name('reset-all');
+});
