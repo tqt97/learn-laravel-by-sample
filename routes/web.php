@@ -20,4 +20,7 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/locale/{locale}', LocaleSwitchController::class)->name('locale.switch');
+// Route to switch locale
+Route::get('/locale/{locale}', LocaleSwitchController::class)
+    ->where('locale', '[a-zA-Z]{2}')
+    ->name('locale.switch');

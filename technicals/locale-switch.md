@@ -27,7 +27,7 @@ config/
 └── locales.php
 
 app/
-├── Support/
+├── Supports/
 │   └── Locale.php
 │
 ├── Http/
@@ -127,13 +127,13 @@ return [
 File:
 
 ```text
-app/Support/Locale.php
+app/Supports/Locale.php
 ```
 
 ```php
 <?php
 
-namespace App\Support;
+namespace App\Supports;
 
 final class Locale
 {
@@ -199,7 +199,7 @@ app/Http/Middleware/SetLocale.php
 
 namespace App\Http\Middleware;
 
-use App\Support\Locale;
+use App\Supports\Locale;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -268,7 +268,7 @@ app/Http/Controllers/LocaleSwitchController.php
 
 namespace App\Http\Controllers;
 
-use App\Support\Locale;
+use App\Supports\Locale;
 use Illuminate\Http\RedirectResponse;
 
 final class LocaleSwitchController
@@ -338,7 +338,7 @@ app/View/Components/Labs/LanguageSwitch.php
 
 namespace App\View\Components\Labs;
 
-use App\Support\Locale;
+use App\Supports\Locale;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
@@ -422,7 +422,7 @@ Tất cả đã nằm trong:
 
 ```text
 config/locales.php
-App\Support\Locale
+App\Supports\Locale
 LanguageSwitch Component
 ```
 
@@ -658,7 +658,7 @@ Nếu cần inject service, hãy inject qua constructor.
 Nhưng trong thiết kế này ta dùng:
 
 ```php
-App\Support\Locale
+App\Supports\Locale
 ```
 
 nên không cần inject.
@@ -671,9 +671,9 @@ nên không cần inject.
 
 ```php
 it('detects supported locales', function () {
-    expect(\App\Support\Locale::isSupported('vi'))->toBeTrue()
-        ->and(\App\Support\Locale::isSupported('en'))->toBeTrue()
-        ->and(\App\Support\Locale::isSupported('unknown'))->toBeFalse();
+    expect(\App\Supports\Locale::isSupported('vi'))->toBeTrue()
+        ->and(\App\Supports\Locale::isSupported('en'))->toBeTrue()
+        ->and(\App\Supports\Locale::isSupported('unknown'))->toBeFalse();
 });
 ```
 
@@ -709,7 +709,7 @@ it('falls back to default locale when session locale is invalid', function () {
 
     $this->get('/');
 
-    expect(app()->getLocale())->toBe(\App\Support\Locale::default());
+    expect(app()->getLocale())->toBe(\App\Supports\Locale::default());
 });
 ```
 
@@ -745,7 +745,7 @@ Kiến trúc change locale nên đi theo flow:
 ```text
 config/locales.php
     ↓
-App\Support\Locale
+App\Supports\Locale
     ↓
 SetLocale Middleware
     ↓
