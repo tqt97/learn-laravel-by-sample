@@ -1,4 +1,4 @@
-
+import './back-to-top';
 
 import Alpine from 'alpinejs';
 
