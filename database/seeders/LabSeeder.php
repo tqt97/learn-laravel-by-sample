@@ -9,6 +9,12 @@ final class LabSeeder extends Seeder
 {
     public function run(): void
     {
-        app(LabDatabaseResetService::class)->resetInventoryOversell();
+        // app(LabDatabaseResetService::class)->resetInventoryOversell();
+        $reset = app(LabDatabaseResetService::class);
+
+        $reset->resetInventoryOversell();
+        $reset->resetBookingDoubleSubmit();
+        $reset->resetPaymentIdempotency();
+        $reset->resetQueueRetrySafeJob();
     }
 }
