@@ -228,7 +228,7 @@
                             <div
                                 class="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                                 <span>⚡</span>
-                                <span>{{ __('lab.real_requests') }}</span>
+                                <span id="naive-real-requests-label">{{ __('lab.real_requests') }}</span>
                             </div>
 
                             <div id="naive-real-request-buttons" class="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -257,7 +257,7 @@
                             <div
                                 class="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                                 <span>🧪</span>
-                                <span>{{ __('lab.race_simulation') }}</span>
+                                <span id="naive-simulation-label">{{ __('lab.race_simulation') }}</span>
                             </div>
 
                             <div id="naive-simulation-buttons" class="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -297,7 +297,7 @@
                             <div
                                 class="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                                 <span>⚡</span>
-                                <span>{{ __('lab.real_requests') }}</span>
+                                <span id="production-real-requests-label">{{ __('lab.real_requests') }}</span>
                             </div>
 
                             <div id="production-real-request-buttons" class="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -326,7 +326,7 @@
                             <div
                                 class="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                                 <span>🧪</span>
-                                <span>{{ __('lab.race_simulation') }}</span>
+                                <span id="production-simulation-label">{{ __('lab.race_simulation') }}</span>
                             </div>
 
                             <div id="production-simulation-buttons" class="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -406,10 +406,10 @@
         <section
             class="mt-6 rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800 sm:p-6">
             <div class="mb-4">
-                <h2 class="text-xl font-bold text-slate-950 dark:text-white">
+                <h2 id="chart-title" class="text-xl font-bold text-slate-950 dark:text-white">
                     {{ __('lab.visualization') }}
                 </h2>
-                <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
+                <p id="chart-description" class="mt-1 text-sm text-slate-600 dark:text-slate-400">
                     {{ __('lab.visualization_description') }}
                 </p>
             </div>

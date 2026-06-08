@@ -32,6 +32,8 @@ interface LabScenarioContract
 
     public function learningCenter(): array;
 
+    public function uiConfig(): array;
+
     public function action(LabMode $mode, array $payload = []): LabActionResult;
 
     public function state(LabMode $mode): LabStateResult;

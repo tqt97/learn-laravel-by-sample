@@ -262,6 +262,31 @@ final class InventoryOversellScenario implements LabScenarioContract
         ];
     }
 
+    public function uiConfig(): array
+    {
+        return [
+            'actions' => [
+                'real_requests_label' => 'Real checkout requests',
+                'simulation_label' => 'Race simulation',
+                'custom_real_default' => 10,
+                'custom_simulation_default' => 50,
+            ],
+            'chart' => [
+                'title' => 'Orders vs Valid Stock Limit',
+                'description' => 'Compare created orders against the valid stock limit.',
+                'naive_label' => 'Naive Orders',
+                'production_label' => 'Production Orders',
+                'limit_label' => 'Valid Stock Limit',
+                'metric_key' => 'result_count',
+                'limit_key' => 'valid_limit',
+            ],
+            'logs' => [
+                'naive_title' => 'Naive Checkout Log',
+                'production_title' => 'Production Checkout Log',
+            ],
+        ];
+    }
+
     public function action(LabMode $mode, array $payload = []): LabActionResult
     {
         return match ($mode) {

@@ -3,7 +3,10 @@
 namespace App\Services\Labs\Core;
 
 use App\Services\Labs\Contracts\LabScenarioContract;
+use App\Services\Labs\Core\Scenarios\BookingDoubleSubmitScenario;
 use App\Services\Labs\Core\Scenarios\InventoryOversellScenario;
+use App\Services\Labs\Core\Scenarios\PaymentIdempotencyScenario;
+use App\Services\Labs\Core\Scenarios\QueueRetrySafeJobScenario;
 use InvalidArgumentException;
 
 final class LabScenarioRegistry
@@ -15,6 +18,10 @@ final class LabScenarioRegistry
     {
         return [
             'inventory-oversell' => InventoryOversellScenario::class,
+            // for concurrency scenarios
+            'booking-double-submit' => BookingDoubleSubmitScenario::class,
+            'payment-idempotency' => PaymentIdempotencyScenario::class,
+            'queue-retry-safe-job' => QueueRetrySafeJobScenario::class,
         ];
     }
 
@@ -46,6 +53,7 @@ final class LabScenarioRegistry
                 'action_presets' => $lab->actionPresets(),
                 'limits' => $lab->limits(),
                 'learning_center' => $lab->learningCenter(),
+                'ui' => $lab->uiConfig(),
             ])
             ->values()
             ->all();
@@ -68,6 +76,7 @@ final class LabScenarioRegistry
             'action_presets' => $lab->actionPresets(),
             'limits' => $lab->limits(),
             'learning_center' => $lab->learningCenter(),
+            'ui' => $lab->uiConfig(),
         ];
     }
 }

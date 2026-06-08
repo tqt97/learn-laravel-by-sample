@@ -7,6 +7,15 @@ window.LabScenarioMeta = (() => {
         setText('scenario-description', scenario.description);
         setText('scenario-action-hint', scenario.action_hint);
 
+        setText('chart-title', scenario.ui?.chart?.title || '');
+        setText('chart-description', scenario.ui?.chart?.description || '');
+
+        setText('naive-real-requests-label', scenario.ui?.actions?.real_requests_label || 'Real Requests');
+        setText('production-real-requests-label', scenario.ui?.actions?.real_requests_label || 'Real Requests');
+
+        setText('naive-simulation-label', scenario.ui?.actions?.simulation_label || 'Simulation');
+        setText('production-simulation-label', scenario.ui?.actions?.simulation_label || 'Simulation');
+
         renderScenarioList('scenario-learning-goals', scenario.learning_goals || [], 'ul');
         renderScenarioList('scenario-how-to-use', scenario.how_to_use || [], 'ol');
 
