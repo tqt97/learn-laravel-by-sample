@@ -2,7 +2,7 @@
 
 namespace App\View\Components\Labs;
 
-use App\Supports\Locale;
+use App\Support\Locale;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;

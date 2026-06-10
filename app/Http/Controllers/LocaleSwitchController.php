@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Supports\Locale;
+use App\Support\Locale;
 
 class LocaleSwitchController extends Controller
 {
