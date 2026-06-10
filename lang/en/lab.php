@@ -52,4 +52,5 @@ return [
     'sequence' => 'Sequence',
     'database' => 'Database',
     'tradeoff' => 'Trade-off',
+    'reset-db-all' => 'Reset both Naive and Production booking databases successfully.',
 ];

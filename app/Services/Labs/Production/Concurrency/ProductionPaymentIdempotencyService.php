@@ -7,13 +7,13 @@ use App\DTOs\Labs\LabStateResult;
 use App\Models\Labs\Production\ProductionIdempotencyKey;
 use App\Models\Labs\Production\ProductionPayment;
 use App\Models\Labs\Production\ProductionPaymentOrder;
+use App\Services\Labs\Core\BaseLabService;
 use App\Services\Labs\Core\LabDatabaseResetService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Throwable;
 
-final class ProductionPaymentIdempotencyService
+final class ProductionPaymentIdempotencyService extends BaseLabService
 {
     public function pay(array $payload = []): LabActionResult
     {
@@ -87,19 +87,21 @@ final class ProductionPaymentIdempotencyService
 
             return LabActionResult::success("Production: Payment #{$payment->id} created safely.");
         } catch (Throwable $e) {
-            Log::error('Production payment failed.', [
-                'exception' => $e,
-                'service' => self::class,
-                'request_key' => $requestKey,
-            ]);
-
-            return LabActionResult::failed('Production: Something went wrong.', statusCode: 500);
+            return $this->failWithLoggedException(
+                e: $e,
+                logMessage: 'Production payment failed.',
+                clientMessage: 'Production: Something went wrong. Please check server logs.',
+                context: [
+                    'request_key' => $payload['request_key'] ?? null,
+                    'run_mode' => $payload['run_mode'] ?? null,
+                ],
+            );
         }
     }
 
     private function simulateSafePayments(array $payload): LabActionResult
     {
-        $count = min(max((int) ($payload['count'] ?? 5), 1), 500);
+        $count = $this->normalizedCount($payload);
 
         $success = 0;
         $failed = 0;

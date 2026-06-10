@@ -201,6 +201,27 @@
         }
     }
 
+    function clearScenarioLogs() {
+        LabUi.clearLog('naive');
+        LabUi.clearLog('production');
+    }
+
+    function logScenarioChanged() {
+        const scenarioTitle = document.getElementById('scenario-select')
+            ?.selectedOptions?.[0]?.textContent?.trim();
+
+        LabUi.log('naive', `Changed scenario: ${scenarioTitle}`, 'info');
+        LabUi.log('production', `Changed scenario: ${scenarioTitle}`, 'info');
+    }
+
+    document
+        .getElementById('scenario-select')
+        ?.addEventListener('change', async () => {
+            clearScenarioLogs();
+            logScenarioChanged();
+            await refreshScenarioState();
+        });
+
     document.addEventListener('DOMContentLoaded', () => {
         initializeLearningCenterFromBlade();
         bindEvents();

@@ -143,10 +143,14 @@
 
                         <select id="scenario-select"
                             class="min-w-64 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:border-slate-700 dark:bg-slate-900 dark:text-white">
-                            @foreach ($scenarios as $scenario)
-                                <option value="{{ $scenario['key'] }}" @selected($scenario['key'] === $defaultScenario)>
-                                    {{ $scenario['title'] }}
-                                </option>
+                            @foreach (collect($scenarios)->groupBy(fn($scenario) => $scenario['part'] . ' — ' . $scenario['group']) as $group => $items)
+                                <optgroup label="{{ $group }}">
+                                    @foreach ($items as $scenario)
+                                        <option value="{{ $scenario['key'] }}" @selected($scenario['key'] === $defaultScenario)>
+                                            {{ $scenario['title'] }}
+                                        </option>
+                                    @endforeach
+                                </optgroup>
                             @endforeach
                         </select>
 
@@ -228,7 +232,9 @@
                             <div
                                 class="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                                 <span>⚡</span>
-                                <span id="naive-real-requests-label">{{ __('lab.real_requests') }}</span>
+                                <span id="naive-real-requests-label">
+                                    {{ $defaultScenarioMeta['ui']['actions']['real_requests_label'] ?? __('lab.real_requests') }}
+                                </span>
                             </div>
 
                             <div id="naive-real-request-buttons" class="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -257,7 +263,9 @@
                             <div
                                 class="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                                 <span>🧪</span>
-                                <span id="naive-simulation-label">{{ __('lab.race_simulation') }}</span>
+                                <span id="naive-simulation-label">
+                                    {{ $defaultScenarioMeta['ui']['actions']['simulation_label'] ?? __('lab.race_simulation') }}
+                                </span>
                             </div>
 
                             <div id="naive-simulation-buttons" class="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -297,7 +305,9 @@
                             <div
                                 class="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                                 <span>⚡</span>
-                                <span id="production-real-requests-label">{{ __('lab.real_requests') }}</span>
+                                <span id="production-real-requests-label">
+                                    {{ $defaultScenarioMeta['ui']['actions']['real_requests_label'] ?? __('lab.real_requests') }}
+                                </span>
                             </div>
 
                             <div id="production-real-request-buttons" class="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -326,7 +336,9 @@
                             <div
                                 class="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                                 <span>🧪</span>
-                                <span id="production-simulation-label">{{ __('lab.race_simulation') }}</span>
+                                <span id="production-simulation-label">
+                                    {{ $defaultScenarioMeta['ui']['actions']['simulation_label'] ?? __('lab.race_simulation') }}
+                                </span>
                             </div>
 
                             <div id="production-simulation-buttons" class="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -387,14 +399,18 @@
             {{-- Logs row --}}
             <div class="grid lg:grid-cols-2">
                 <div class="p-5 lg:border-r dark:border-slate-800">
-                    <h3 class="section-title">{{ __('lab.realtime_log') }}</h3>
+                    <h3 id="naive-log-title" class="section-title">
+                        {{ $defaultScenarioMeta['ui']['logs']['naive_title'] ?? __('lab.realtime_log') }}
+                    </h3>
                     <div data-log="naive"
                         class="h-80 overflow-y-auto rounded-2xl bg-slate-950 p-4 font-mono text-xs text-slate-100 ring-1 ring-slate-800">
                     </div>
                 </div>
 
                 <div class="p-5">
-                    <h3 class="section-title">{{ __('lab.realtime_log') }}</h3>
+                    <h3 id="production-log-title" class="section-title">
+                        {{ $defaultScenarioMeta['ui']['logs']['production_title'] ?? __('lab.realtime_log') }}
+                    </h3>
                     <div data-log="production"
                         class="h-80 overflow-y-auto rounded-2xl bg-slate-950 p-4 font-mono text-xs text-slate-100 ring-1 ring-slate-800">
                     </div>
@@ -407,10 +423,10 @@
             class="mt-6 rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800 sm:p-6">
             <div class="mb-4">
                 <h2 id="chart-title" class="text-xl font-bold text-slate-950 dark:text-white">
-                    {{ __('lab.visualization') }}
+                    {{ $defaultScenarioMeta['ui']['chart']['title'] ?? __('lab.visualization') }}
                 </h2>
                 <p id="chart-description" class="mt-1 text-sm text-slate-600 dark:text-slate-400">
-                    {{ __('lab.visualization_description') }}
+                    {{ $defaultScenarioMeta['ui']['chart']['description'] ?? __('lab.visualization_description') }}
                 </p>
             </div>
 

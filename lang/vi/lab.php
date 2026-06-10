@@ -52,4 +52,5 @@ return [
     'sequence' => 'Sequence',
     'database' => 'Database',
     'tradeoff' => 'Trade-off',
+    'reset-db-all' => 'Đã khôi phục thành công cả cơ sở dữ liệu đặt chỗ Naive và Production.',
 ];

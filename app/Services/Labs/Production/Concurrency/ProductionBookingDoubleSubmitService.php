@@ -6,13 +6,13 @@ use App\DTOs\Labs\LabActionResult;
 use App\DTOs\Labs\LabStateResult;
 use App\Models\Labs\Production\ProductionBookingReservation;
 use App\Models\Labs\Production\ProductionBookingRoom;
+use App\Services\Labs\Core\BaseLabService;
 use App\Services\Labs\Core\LabDatabaseResetService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Throwable;
 
-final class ProductionBookingDoubleSubmitService
+final class ProductionBookingDoubleSubmitService extends BaseLabService
 {
     public function book(array $payload = []): LabActionResult
     {
@@ -73,19 +73,21 @@ final class ProductionBookingDoubleSubmitService
 
             return LabActionResult::success("Production: Reservation #{$reservation->id} created safely.");
         } catch (Throwable $e) {
-            Log::error('Production booking failed.', [
-                'exception' => $e,
-                'service' => self::class,
-                'request_key' => $requestKey,
-            ]);
-
-            return LabActionResult::failed('Production: Something went wrong.', statusCode: 500);
+            return $this->failWithLoggedException(
+                e: $e,
+                logMessage: 'Production booking failed.',
+                clientMessage: 'Production: Something went wrong. Please check server logs.',
+                context: [
+                    'request_key' => $payload['request_key'] ?? null,
+                    'run_mode' => $payload['run_mode'] ?? null,
+                ],
+            );
         }
     }
 
     private function simulateSafeBatch(array $payload = []): LabActionResult
     {
-        $count = min(max((int) ($payload['count'] ?? 5), 1), 500);
+        $count = $this->normalizedCount($payload);
 
         $success = 0;
         $failed = 0;

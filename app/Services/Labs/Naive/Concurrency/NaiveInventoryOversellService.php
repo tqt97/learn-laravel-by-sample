@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Labs\Naive\Inventory;
+namespace App\Services\Labs\Naive\Concurrency;
 
 use App\DTOs\Labs\LabActionResult;
 use App\DTOs\Labs\LabStateResult;
@@ -143,7 +143,6 @@ final class NaiveInventoryOversellService
     public function state(): LabStateResult
     {
         $product = NaiveInventoryProduct::query()->first();
-
         $ordersCount = NaiveInventoryOrder::query()->count();
         $stock = $product?->stock ?? 0;
 
@@ -151,6 +150,8 @@ final class NaiveInventoryOversellService
             mode: 'naive',
             title: 'Naive Checkout',
             metrics: [
+                'result_count' => $ordersCount,
+                'valid_limit' => 1,
                 'stock' => $stock,
                 'orders_count' => $ordersCount,
                 'valid_stock_limit' => 1,

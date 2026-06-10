@@ -3,10 +3,10 @@
 namespace App\Services\Labs\Core;
 
 use App\Services\Labs\Contracts\LabScenarioContract;
-use App\Services\Labs\Core\Scenarios\BookingDoubleSubmitScenario;
-use App\Services\Labs\Core\Scenarios\InventoryOversellScenario;
-use App\Services\Labs\Core\Scenarios\PaymentIdempotencyScenario;
-use App\Services\Labs\Core\Scenarios\QueueRetrySafeJobScenario;
+use App\Services\Labs\Core\Scenarios\Concurrency\BookingDoubleSubmitScenario;
+use App\Services\Labs\Core\Scenarios\Concurrency\InventoryOversellScenario;
+use App\Services\Labs\Core\Scenarios\Concurrency\PaymentIdempotencyScenario;
+use App\Services\Labs\Core\Scenarios\Concurrency\QueueRetrySafeJobScenario;
 use InvalidArgumentException;
 
 final class LabScenarioRegistry
@@ -17,8 +17,8 @@ final class LabScenarioRegistry
     private function scenarios(): array
     {
         return [
-            'inventory-oversell' => InventoryOversellScenario::class,
             // for concurrency scenarios
+            'inventory-oversell' => InventoryOversellScenario::class,
             'booking-double-submit' => BookingDoubleSubmitScenario::class,
             'payment-idempotency' => PaymentIdempotencyScenario::class,
             'queue-retry-safe-job' => QueueRetrySafeJobScenario::class,
@@ -39,21 +39,11 @@ final class LabScenarioRegistry
     public function all(): array
     {
         return collect($this->scenarios())
-            ->map(fn (string $class, string $key) => [
-                'key' => $key,
-                'instance' => $lab = app($class),
-                'title' => $lab->title(),
-                'subtitle' => $lab->subtitle(),
-                'description' => $lab->description(),
-                'action_hint' => $lab->actionHint(),
-                'how_to_use' => $lab->howToUse(),
-                'learning_goals' => $lab->learningGoals(),
-                'naive_techniques' => $lab->naiveTechniques(),
-                'production_techniques' => $lab->productionTechniques(),
-                'action_presets' => $lab->actionPresets(),
-                'limits' => $lab->limits(),
-                'learning_center' => $lab->learningCenter(),
-                'ui' => $lab->uiConfig(),
+            ->map(fn (string $class, string $key) => $this->meta($key))
+            ->sortBy([
+                ['group', 'asc'],
+                ['part', 'asc'],
+                ['order', 'asc'],
             ])
             ->values()
             ->all();
@@ -65,6 +55,9 @@ final class LabScenarioRegistry
 
         return [
             'key' => $lab->key(),
+            'group' => $lab->group(),
+            'part' => $lab->part(),
+            'order' => $lab->order(),
             'title' => $lab->title(),
             'subtitle' => $lab->subtitle(),
             'description' => $lab->description(),
@@ -75,8 +68,8 @@ final class LabScenarioRegistry
             'production_techniques' => $lab->productionTechniques(),
             'action_presets' => $lab->actionPresets(),
             'limits' => $lab->limits(),
-            'learning_center' => $lab->learningCenter(),
             'ui' => $lab->uiConfig(),
+            'learning_center' => $lab->learningCenter(),
         ];
     }
 }

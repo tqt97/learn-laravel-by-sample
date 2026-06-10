@@ -6,14 +6,15 @@ use App\DTOs\Labs\LabActionResult;
 use App\DTOs\Labs\LabStateResult;
 use App\Models\Labs\Production\ProductionJobNotification;
 use App\Models\Labs\Production\ProductionProcessedJob;
+use App\Services\Labs\Core\BaseLabService;
 use App\Services\Labs\Core\LabDatabaseResetService;
 use Illuminate\Support\Facades\DB;
 
-final class ProductionQueueRetryService
+final class ProductionQueueRetryService extends BaseLabService
 {
     public function run(array $payload = []): LabActionResult
     {
-        $count = min(max((int) ($payload['count'] ?? 1), 1), 500);
+        $count = $this->normalizedCount($payload);
 
         $success = 0;
         $ignored = 0;
@@ -60,7 +61,6 @@ final class ProductionQueueRetryService
         return new LabStateResult(
             mode: 'production',
             title: 'Production Queue Retry',
-
             metrics: [
                 'result_count' => $sentCount,
                 'valid_limit' => 1,

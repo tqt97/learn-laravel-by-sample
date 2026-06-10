@@ -10,6 +10,12 @@ interface LabScenarioContract
 {
     public function key(): string;
 
+    public function group(): string;
+
+    public function part(): string;
+
+    public function order(): int;
+
     public function title(): string;
 
     public function subtitle(): string;
@@ -30,9 +36,9 @@ interface LabScenarioContract
 
     public function limits(): array;
 
-    public function learningCenter(): array;
-
     public function uiConfig(): array;
+
+    public function learningCenter(): array;
 
     public function action(LabMode $mode, array $payload = []): LabActionResult;
 

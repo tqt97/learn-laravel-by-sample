@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Services\Labs\Production\Inventory;
+namespace App\Services\Labs\Production\Concurrency;
 
 use App\DTOs\Labs\LabActionResult;
 use App\DTOs\Labs\LabStateResult;
 use App\Models\Labs\Production\ProductionInventoryMovement;
 use App\Models\Labs\Production\ProductionInventoryOrder;
 use App\Models\Labs\Production\ProductionInventoryProduct;
+use App\Services\Labs\Core\BaseLabService;
 use App\Services\Labs\Core\LabDatabaseResetService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Throwable;
 
-final class ProductionInventoryOversellService
+final class ProductionInventoryOversellService extends BaseLabService
 {
     public function __construct(
         private readonly LabDatabaseResetService $resetService,
@@ -115,17 +115,14 @@ final class ProductionInventoryOversellService
                 ],
             );
         } catch (Throwable $e) {
-            Log::error('Production inventory order failed.', [
-                'exception' => $e,
-                'service' => self::class,
-                'payload' => [
+            return $this->failWithLoggedException(
+                e: $e,
+                logMessage: 'Production inventory order failed.',
+                clientMessage: 'Production: Something went wrong. Please check server logs.',
+                context: [
+                    'request_key' => $payload['request_key'] ?? null,
                     'run_mode' => $payload['run_mode'] ?? null,
                 ],
-            ]);
-
-            return LabActionResult::failed(
-                message: 'Production: Something went wrong while creating the order',
-                statusCode: 500,
             );
         }
     }
@@ -155,17 +152,14 @@ final class ProductionInventoryOversellService
             mode: 'production',
             title: 'Production Checkout',
             metrics: [
+                'result_count' => $ordersCount,
+                'valid_limit' => 1,
                 'stock_on_hand' => $stockOnHand,
                 'reserved_stock' => $reservedStock,
                 'available_stock' => $availableStock,
                 'orders_count' => $ordersCount,
                 'valid_stock_limit' => 1,
             ],
-            records: ProductionInventoryOrder::query()
-                ->latest()
-                ->limit(10)
-                ->get(['id', 'quantity', 'status', 'request_key', 'created_at'])
-                ->toArray(),
             invariants: [
                 [
                     'name' => 'Reserved stock must not exceed stock on hand',

@@ -6,11 +6,11 @@ use App\DTOs\Labs\LabActionResult;
 use App\DTOs\Labs\LabStateResult;
 use App\Models\Labs\Naive\NaiveBookingReservation;
 use App\Models\Labs\Naive\NaiveBookingRoom;
+use App\Services\Labs\Core\BaseLabService;
 use App\Services\Labs\Core\LabDatabaseResetService;
-use Illuminate\Support\Facades\Log;
 use Throwable;
 
-final class NaiveBookingDoubleSubmitService
+final class NaiveBookingDoubleSubmitService extends BaseLabService
 {
     public function book(array $payload = []): LabActionResult
     {
@@ -52,12 +52,15 @@ final class NaiveBookingDoubleSubmitService
 
             return LabActionResult::success("Naive: Reservation #{$reservation->id} created.");
         } catch (Throwable $e) {
-            Log::error('Naive booking failed.', [
-                'exception' => $e,
-                'service' => self::class,
-            ]);
-
-            return LabActionResult::failed('Naive: Something went wrong.', statusCode: 500);
+            return $this->failWithLoggedException(
+                e: $e,
+                logMessage: 'Naive booking failed.',
+                clientMessage: 'Naive: Something went wrong. Please check server logs.',
+                context: [
+                    'request_key' => $payload['request_key'] ?? null,
+                    'run_mode' => $payload['run_mode'] ?? null,
+                ],
+            );
         }
     }
 
@@ -109,10 +112,6 @@ final class NaiveBookingDoubleSubmitService
         return new LabStateResult(
             mode: 'naive',
             title: 'Naive Booking',
-            // metrics: [
-            //     'reservations_count' => $count,
-            //     'valid_slot_limit' => 1,
-            // ],
             metrics: [
                 'result_count' => $count,
                 'valid_limit' => 1,

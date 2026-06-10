@@ -16,6 +16,9 @@ window.LabScenarioMeta = (() => {
         setText('naive-simulation-label', scenario.ui?.actions?.simulation_label || 'Simulation');
         setText('production-simulation-label', scenario.ui?.actions?.simulation_label || 'Simulation');
 
+        setText('naive-log-title', scenario.ui?.logs?.naive_title || 'Naive Log');
+        setText('production-log-title', scenario.ui?.logs?.production_title || 'Production Log');
+
         renderScenarioList('scenario-learning-goals', scenario.learning_goals || [], 'ul');
         renderScenarioList('scenario-how-to-use', scenario.how_to_use || [], 'ol');
 
